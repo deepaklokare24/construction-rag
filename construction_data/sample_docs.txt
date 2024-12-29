@@ -1,0 +1,16 @@
+'''
+# Building Foundation Types
+Shallow foundations are commonly used for small buildings. They include isolated footings, strip foundations, and raft foundations. Deep foundations like piles are used for larger structures or poor soil conditions.
+
+# Concrete Mix Ratios
+Standard concrete mix ratio is 1:2:4 (cement:sand:aggregate). High-strength concrete uses 1:1.5:3. Water-cement ratio should typically be between 0.45-0.60 for optimal strength.
+
+# Building Safety Codes
+All multi-story buildings must have fire exits at maximum 30m intervals. Minimum corridor width should be 1.5m. Emergency lighting must be provided every 20m.
+
+# Sustainable Construction
+Green building materials include recycled steel, bamboo, and reclaimed wood. Solar panels should be oriented south in northern hemisphere with 30-45 degree tilt.
+
+# Construction Project Management
+Critical path method (CPM) is essential for project scheduling. Typical construction phases: planning, foundation, structure, finishing, MEP installation.
+'''
