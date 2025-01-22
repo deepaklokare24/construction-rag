@@ -76,8 +76,16 @@ with st.sidebar:
         "What are the best practices for managing construction site safety?",
         "What are the minimum requirements for stairway construction?",
         "What are the fall protection requirements for workers?",
-        "What are the common causes of project delays?",
-        "How do material costs impact project budgets?"
+        "What are the emergency exit requirements for residential buildings?",
+        "What are the key safety measures required when working at heights?",
+        "What is the average duration of residential construction projects?",
+        "How do material costs typically impact construction project budgets?",
+        "What are the most common risk factors in construction project management?",
+        "What is the relationship between project size and completion time?",
+        "How have construction costs changed over recent years?",
+        "What are the most important factors to consider in construction project planning?",
+        "What are common quality control measures in construction projects?",
+        "What documentation is required for construction project compliance?",
     ]
     
     for question in example_questions:
