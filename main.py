@@ -1,4 +1,5 @@
 import os
+import sys
 import kaggle
 import pandas as pd
 from dotenv import load_dotenv
@@ -12,6 +13,14 @@ from langchain.chains import create_retrieval_chain
 from langchain_core.output_parsers import StrOutputParser
 from langchain_community.document_loaders import PyPDFLoader
 from typing import List, Dict
+import argparse
+
+try:
+    import faiss
+    print(f"FAISS version: {faiss.__version__}")
+except ImportError as e:
+    print(f"Detailed import error: {e}")
+    print(f"Python path: {sys.path}")
 
 class ConstructionDataLoader:
     def __init__(self, pdf_directory: str):
@@ -83,10 +92,11 @@ class ConstructionRAG:
         """Initialize the Construction RAG system"""
         load_dotenv()
         self.validate_environment()
-        self.llm = ChatOpenAI()
+        self.llm = ChatOpenAI(model="gpt-4o-mini")
         self.embeddings = OpenAIEmbeddings()
         self.output_parser = StrOutputParser()
         self.data_loader = ConstructionDataLoader("construction_data")
+        self.vectorstore_path = "vectorstore"  # Path to save/load vectorstore
 
     def validate_environment(self):
         """Validate required environment variables"""
@@ -116,11 +126,16 @@ class ConstructionRAG:
         print(f"Total chunks after splitting: {len(split_docs)}")
         return split_docs
 
-    def create_vectorstore(self, documents):
-        """Create FAISS vectorstore from documents"""
-        print(f"Creating vector store with {len(documents)} documents")
+    def create_or_load_vectorstore(self, documents=None, force_recreate=False):
+        """Create new vectorstore or load existing one"""
+        print(f"Creating new vector store with {len(documents)} documents")
         vectorstore = FAISS.from_documents(documents, self.embeddings)
-        print("Vector store created successfully")
+        
+        # Save the vectorstore
+        print("Saving vector store to disk...")
+        vectorstore.save_local(self.vectorstore_path)
+        print("Vector store saved successfully")
+        
         return vectorstore
 
     def setup_rag_chain(self, vectorstore):
@@ -166,18 +181,19 @@ def main():
         # Initialize the RAG system
         rag = ConstructionRAG()
         
-        # Specify which Kaggle datasets to include
-        kaggle_datasets = [
-            "project_management",
-        ]
-        
-        # Load documents from both PDFs and Kaggle
-        print("Loading documents...")
-        documents = rag.load_all_documents(include_kaggle_datasets=kaggle_datasets)
-        
-        # Create vectorstore
-        print("Creating vector store...")
-        vectorstore = rag.create_vectorstore(documents)
+        # Create or load vectorstore
+        print("Initializing vector store...")
+        if os.path.exists(rag.vectorstore_path):
+            print("Found existing vector store, loading...")
+            vectorstore = FAISS.load_local(
+                rag.vectorstore_path, 
+                rag.embeddings,
+                allow_dangerous_deserialization=True
+            )
+        else:
+            print("No existing vector store found. Creating new one...")
+            documents = rag.load_all_documents(include_kaggle_datasets=["project_management"])
+            vectorstore = rag.create_or_load_vectorstore(documents, force_recreate=True)
         
         # Setup RAG chain
         print("Setting up RAG chain...")
@@ -213,8 +229,6 @@ if __name__ == "__main__":
 # How do material costs typically impact construction project budgets? - Inference
 # What are the most common risk factors in construction project management?
 # What is the relationship between project size and completion time?
-# What are the fall protection requirements for construction workers?
-# What are the best practices for managing construction site safety?
 # How have construction costs changed over recent years? - no answer!
 # What are the most important factors to consider in construction project planning?
 # What are common quality control measures in construction projects?

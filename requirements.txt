@@ -4,9 +4,10 @@ langchain-openai>=0.2.14
 langchain-community>=0.0.13
 langchain-text-splitters>=0.0.1
 langsmith>=0.1.17,<0.3.0
-faiss-cpu>=1.7.4,<1.8.0
 python-dotenv==1.0.0
-pandas==2.1.0
+pandas>=2.2.0
 pypdf>=3.0.0
 kaggle>=1.5.13
-gradio>=4.0.0
+streamlit>=1.32.0
+faiss-cpu>=1.7.4
+watchdog>=3.0.0

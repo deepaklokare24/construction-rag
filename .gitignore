@@ -3,3 +3,12 @@ __pycache__/
 .env
 .DS_Store
 temp_kaggle_data/
+# Virtual Environment
+venv/
+env/
+.env/
+construction-rag/
+# Vector store
+vectorstore/
+# Streamlit
+.streamlit/secrets.toml
